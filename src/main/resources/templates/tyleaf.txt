@@ -1,0 +1,40 @@
+자주 사용하는 타임리프의 속성
+타임리프의 자주 사용하는 속성에는 다음 3가지 유형이 있다. 이 3가지 유형만 알아도 여러 기능을 충분히 만들 수 있다.
+
+1. 분기문 속성
+
+분기문 속성은 다음과 같이 사용한다.
+
+th:if="${question != null}"
+위의 경우 question 객체가 null 이 아닌 경우에 해당 엘리먼트가 표시된다.
+
+2. 반복문 속성
+
+반복문은 반복횟수만큼 해당 엘리먼트를 반복하여 표시한다. 반복문 속성은 자바의 for each 문과 유사하다.
+
+th:each="question : ${questionList}"
+반복문은 다음과 같이 사용할 수도 있다.
+
+th:each="question, loop : ${questionList}"
+추가한 loop 객체를 이용하여 루프 내에서 다음과 같은 속성을 사용할수 있다.
+
+loop.index - 반복 순서, 0부터 1씩 증가
+loop.count - 반복 순서, 1부터 1씩 증가
+loop.size - 반복 객체의 요소 갯수 (예: questionList의 요소 갯수)
+loop.first - 루프의 첫번째 순서인 경우 true
+loop.last - 루프의 마지막 순서인 경우 true
+loop.odd - 루프의 홀수번째 순서인 경우 true
+loop.even - 루프의 짝수번째 순서인 경우 true
+loop.current - 현재 대입된 객체 (예: 위의 경우 question과 동일)
+3. 텍스트 속성
+
+th:text=값 속성은 해당 엘리먼트의 텍스트로 "값"을 출력한다.
+
+th:text="${question.subject}"
+텍스트는 th:text 속성 대신에 다음처럼 대괄호를 사용하여 값을 직접 출력할수 있다.
+
+<tr th:each="question : ${questionList}">
+    <td>[[${question.subject}]]</td>
+    <td>[[${question.createDate}]]</td>
+</tr>
+이 책에서는 새로운 타임리프 문법이 나올 때마다 자세히 설명할 것이므로 지금 당장 모든 타임리프의 속성에 대해 알아 둘 필요는 없다.
