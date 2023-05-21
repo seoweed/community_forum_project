@@ -19,6 +19,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa' // jpa 사용을 위한 의존성 추가 (의존성 추가와 더불어 application.properties 에 설정을 추가해야 됨)
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf' // 컨트롤러에서 매핑되는 템플릿을 조작하기 위한 타임리프
 	implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect' // 타임리프 의존성
+	implementation 'org.springframework.boot:spring-boot-starter-validation' // 화면에서 전달받은 입력값을 검증
 
 	implementation 'org.projectlombok:lombok' // lombok 플러그인을 사용하기 위해 추가한 의존성
 	annotationProcessor 'org.projectlombok:lombok' // lombok

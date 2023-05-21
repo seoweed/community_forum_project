@@ -1,9 +1,11 @@
 package com.mysite.sbb.question;
 
 import com.mysite.sbb.DataNotFoundException;
+import com.mysite.sbb.answer.AnswerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -12,6 +14,7 @@ import java.util.Optional;
 @RequiredArgsConstructor // 생성자 lombok
 public class QuestionService {
     private final QuestionRepository questionRepository; // questionRepository 객체는 생성자 방식으로 DI 규칙에 의해 주입된다.
+    private final AnswerRepository answerRepository;
 
     public List<Question> getList() {
         return questionRepository.findAll();
@@ -24,6 +27,13 @@ public class QuestionService {
             throw new DataNotFoundException("question not found");
         }
     }
-    // 질문 생성하기
+    // 질문 저장하기
+    public void create(String subject, String content) {
+        Question question = new Question();
+        question.setSubject(subject);
+        question.setContent(content);
+        question.setCreateDate(LocalDateTime.now());
+        this.questionRepository.save(question);
+    }
 
 }
