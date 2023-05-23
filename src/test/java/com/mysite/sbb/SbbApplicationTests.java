@@ -4,6 +4,7 @@ import com.mysite.sbb.answer.Answer;
 import com.mysite.sbb.answer.AnswerRepository;
 import com.mysite.sbb.question.Question;
 import com.mysite.sbb.question.QuestionRepository;
+import com.mysite.sbb.question.QuestionService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -141,21 +142,34 @@ class SbbApplicationTests {
 //	}
 
 	// 질문에서 답변 찾기
-	@Transactional // 메서드가 종료될 때 까지 db 세션 유지
-	@Test
-	void testJap() {
-		Optional<Question> oq = this.questionRepository.findById(2);
-		Question q = oq.get();
-		List<Answer> answerList = q.getAnswerList();
-
-		assertEquals(1, answerList.size());
-		assertEquals("네 자동으로 생성됩니다.", answerList.get(0).getContent());
-		// 이렇게만 하면 LazyInitializationException 오류가 발생한다.
+//	@Transactional // 메서드가 종료될 때 까지 db 세션 유지
+//	@Test
+//	void testJap() {
+//		Optional<Question> oq = this.questionRepository.findById(2);
+//		Question q = oq.get();
+//		List<Answer> answerList = q.getAnswerList();
+//
+//		assertEquals(1, answerList.size());
+//		assertEquals("네 자동으로 생성됩니다.", answerList.get(0).getContent());
+//		// 이렇게만 하면 LazyInitializationException 오류가 발생한다.
 		// 왜냐하면 Question 리포지터리가 findById를 호출하여 Question 객체를 조회하고 나면 DB세션이 끊어지기 때문이다.
 		// 그 이후에 실행되는 q.getAnswerList() 메서드는 세션이 종료되어 오류가 발생한다.
 		// 답변 데이터 리스트는 q 객체를 조회할때 가져오지 않고 q.getAnswerList() 메서드를 호출하는 시점에 가져오기 때문이다.
 		// 이 문제는 테스트 코드에서만 발생한다. 실제 서버에서 JPA 프로그램들을 실행할 때는 DB 세션이 종료되지 않기 때문에 위와 같은 오류가 발생하지 않는다.
 		// 테스트 코드를 수행할 때 위와 같은 오류를 방지할 수 있는 가장 간단한 방법은 다음처럼 @Transactional 애너테이션을 사용하는 것이다.
 		// @Transactional 애너테이션을 사용하면 메서드가 종료될 때까지 DB 세션이 유지된다
+//	}
+
+	// 대랑의 테스트 데이터를 생성하기 위한 테스트 생성
+	@Autowired
+	private QuestionService questionService;
+	@Test
+	void testJpa() {
+		for (int i = 0; i < 300; i++) {
+			String subject = String.format("테스트 데이터입니다:[%03d]", i);
+			String content = "( ´ ▽ ` )ﾉ";
+			this.questionService.create(subject, content);
+		}
+
 	}
 }

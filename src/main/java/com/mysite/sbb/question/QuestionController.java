@@ -2,6 +2,7 @@ package com.mysite.sbb.question;
 
 import com.mysite.sbb.answer.AnswerForm;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -44,9 +45,9 @@ public class QuestionController {
     private final QuestionService questionService; // 자동 주입과 컨트롤러 대신 중간다리 역할인 서비스 객체를 생성
     // 질문 목록 페이지 컨트롤러
     @GetMapping("/list")
-    public String list(Model model) {
-        List<Question> questionList = questionService.getList(); // QuestionService 에 만들어두었던 getList 메서드를 사용
-        model.addAttribute("questionList", questionList);
+    public String list(Model model, @RequestParam(value="page", defaultValue="0") int page) {
+        Page<Question> paging = this.questionService.getList(page);
+        model.addAttribute("paging", paging);
         return "question_list";
     }
     // 질문 상세 페이지 컨트롤러
